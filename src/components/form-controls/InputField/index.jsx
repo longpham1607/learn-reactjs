@@ -1,25 +1,33 @@
-import React from "react";
-import PropTypes from "prop-types";
 import { TextField } from "@mui/material";
-import { Controller } from "react-hook-form";
+import React from "react";
+import { useController } from "react-hook-form";
 
 InputField.propTypes = {
-  form: PropTypes.object.isRequired,
-  name: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  disabled: PropTypes.bool,
+  // form: PropTypes.object.isRequired,
+  // name: PropTypes.string.isRequired,
+  // label: PropTypes.string,
+  // errors: PropTypes.object,
+  // hasError: PropTypes.bool,
 };
 
 function InputField(props) {
-  const { form, name, label, disabled } = props;
+  const { field, fieldState } = useController(props);
+  const {label } = props;
+  const hasError = fieldState.error;
+
   return (
-    <Controller
-      name={name}
-      control={form.control}
-      render={(lable, disabled) => (
-        <TextField fullWidth label={label} disabled={disabled} />
-      )}
-    />
+    <div>
+      <TextField
+        {...field}
+        placeholder={label}
+        fullWidth
+        margin="normal"
+        variant="outlined"
+        error={!!hasError}
+        helperText={fieldState.error?.message}
+        label={label}
+      />
+    </div>
   );
 }
 

@@ -61,8 +61,12 @@ function TodoFeature(props) {
   );
 
   const handleOnSubmit = (value) => {
-    console.log("todo Form ", value);
+    const { Todo } = value;
+    const length = todoList.length + 1;
+    const newTodo = { id: length, title: Todo, status: "new" };
+    setTodoList([...todoList, newTodo]);
   };
+
   return (
     <div>
       <h3>To do Form</h3>

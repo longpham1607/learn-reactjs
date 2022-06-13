@@ -1,8 +1,8 @@
-import React from "react";
-import { Route, Routes } from "react-router-dom";
-import NotFound from "../NotFound";
-import ClockHomePage from "./page/ClockHomePage";
-import ClockPage from "./page/ClockPage";
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import NotFound from '../NotFound';
+import ClockHomePage from './page/ClockHomePage';
+import ClockPage from './page/ClockPage';
 
 function ClockFeature(props) {
   return (

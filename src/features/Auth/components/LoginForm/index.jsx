@@ -8,7 +8,7 @@ import PropTypes from "prop-types";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
-RegisterForm.propTypes = {
+LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
@@ -22,20 +22,15 @@ const useStyles = makeStyles({
 const schema = yup
   .object()
   .shape({
-    fullName: yup.string().required("Please Enter Your FullName"),
-    email: yup.string().required("Please Enter Your Email").email("Please Enter The Valid Email"),
-    password: yup
+    identifier: yup
       .string()
-      .required("Please Enter Your Password")
-      .min(6, "Please Enter At Least 6 Characters"),
-    retypePassword: yup
-      .string()
-      .required("Please Enter Your Retype-Password")
-      .oneOf([yup.ref("password")], "Password Doesn't Match"),
+      .required("Please Enter Your Email")
+      .email("Please Enter The Valid Email"),
+    password: yup.string().required("Please Enter Your Password"),
   })
   .required();
 
-function RegisterForm(props) {
+function LoginForm(props) {
   const classes = useStyles();
 
   const {
@@ -45,10 +40,8 @@ function RegisterForm(props) {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      fullName: "",
-      email: "",
+      identifier: "",
       password: "",
-      retypePassword: "",
     },
   });
 
@@ -64,13 +57,11 @@ function RegisterForm(props) {
       </Avatar>
 
       <Typography component="h3" variant="h5" className={classes.title}>
-        Create An Account
+        Login
       </Typography>
 
       <form onSubmit={handleSubmit(handleOnSubmit)}>
-        <InputField control={control} name="fullName" rules={{ required: true }} label="FullName" />
-
-        <InputField control={control} name="email" rules={{ required: true }} label="Email" />
+        <InputField control={control} name="identifier" rules={{ required: true }} label="Email" />
 
         <PasswordField
           control={control}
@@ -78,18 +69,13 @@ function RegisterForm(props) {
           rules={{ required: true }}
           label="Password"
         />
-        <PasswordField
-          control={control}
-          name="retypePassword"
-          rules={{ required: true }}
-          label="Retype-Password"
-        />
+
         <Button className={classes.submit} type="submit" variant="contained" color="primary">
-          Create An Account
+          Login
         </Button>
       </form>
     </div>
   );
 }
 
-export default RegisterForm;
+export default LoginForm;

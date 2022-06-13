@@ -9,21 +9,31 @@ import ClockFeature from "./features/Clock/index";
 import NotFound from "./features/NotFound";
 import TodoFeature from "./features/Todo/pages/index";
 import "./index.css";
+import { SnackbarProvider } from "notistack";
+import ProductFeature from "features/Product";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<div>HOME PAGE</div>} />
-          <Route path="/clock/*" element={<ClockFeature />} />
-          <Route path="/todo" element={<TodoFeature />} />
-          <Route path="/counter" element={<CounterFeature />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
+      <SnackbarProvider
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+      >
+        <BrowserRouter>
+          <Header />
+          <Routes>
+            <Route path="/" element={<div>HOME PAGE</div>} />
+            <Route path="/clock/*" element={<ClockFeature />} />
+            <Route path="/todo" element={<TodoFeature />} />
+            <Route path="/counter" element={<CounterFeature />} />
+            <Route path="/products" element={<ProductFeature />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </SnackbarProvider>
     </Provider>
   </React.StrictMode>
 );

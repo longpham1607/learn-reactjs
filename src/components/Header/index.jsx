@@ -1,30 +1,54 @@
+import { AccountCircle, Close } from "@mui/icons-material";
 import CodeIcon from "@mui/icons-material/Code";
+import { Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import Login from "features/Auth/components/Login/index";
 import Register from "features/Auth/components/Register";
-import React, { useState } from "react";
+import { logout } from "features/Auth/userSlice";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+
+const MODE = {
+  LOGIN: "login",
+  REGISTER: "register",
+};
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-
+  const [mode, setMode] = useState(MODE.LOGIN);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const handleMenuClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+  const handleUserLogout = () => {
+    const action = logout();
+    dispatch(action);
+    console.log("test");
+  };
 
+  const loggedInUser = useSelector((state) => state.user.current);
+  const isLoggedIn = !!loggedInUser.id;
   const handleClose = () => {
     setOpen(false);
   };
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <div sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <IconButton
@@ -49,28 +73,70 @@ export default function Header() {
             <Button color="inherit">Clock</Button>
           </NavLink>
 
-          <Button color="inherit" onClick={handleClickOpen}>
-            Register
-          </Button>
+          {!isLoggedIn && (
+            <Button color="inherit" onClick={handleClickOpen}>
+              Login
+            </Button>
+          )}
+          {isLoggedIn && (
+            <IconButton color="inherit" onClick={handleMenuClick}>
+              <AccountCircle />
+            </IconButton>
+          )}
         </Toolbar>
       </AppBar>
 
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-  
-      >
+      <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <DialogContentText>
-            <Register />
-          </DialogContentText>
+          {mode === MODE.LOGIN && (
+            <>
+              <Login closeDialog={handleClose} />
+              <Box>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    setMode(MODE.REGISTER);
+                  }}
+                >
+                  Don't have an account. Register here
+                </Button>
+              </Box>
+            </>
+          )}
+          {mode === MODE.REGISTER && (
+            <>
+              <Register closeDialog={handleClose} />
+              <Box>
+                <Button
+                  color="primary"
+                  onClick={() => {
+                    setMode(MODE.LOGIN);
+                  }}
+                >
+                  Already have an account. Login here
+                </Button>
+              </Box>
+            </>
+          )}
         </DialogContent>
 
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+          <IconButton>
+            <Close onClick={handleClose} />
+          </IconButton>
         </DialogActions>
       </Dialog>
-    </Box>
+      {isLoggedIn && (
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+        >
+          <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+          <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+          <MenuItem onClick={handleUserLogout}>Logout</MenuItem>
+        </Menu>
+      )}
+    </div>
   );
 }

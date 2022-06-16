@@ -66,7 +66,6 @@ function ListPage(props) {
         const { data, pagination } = await productApi.getAll(queryParams);
         setProductList(data.data);
         setPagination(pagination);
-        console.log("filter set", queryParams);
       } catch (error) {
         console.log("fail to load product list ", error);
       }

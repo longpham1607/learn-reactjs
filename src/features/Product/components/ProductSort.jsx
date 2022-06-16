@@ -11,6 +11,7 @@ function ProductSort({ currentSort, onChange }) {
   const handleSortChange = (event, newValue) => {
     if (onChange) onChange(newValue);
   };
+  
   return (
     <Tabs
       value={currentSort}

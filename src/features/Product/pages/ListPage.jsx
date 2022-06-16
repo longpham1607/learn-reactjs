@@ -4,11 +4,13 @@ import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
 import productApi from "api/productApi";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import FiltersViewer from "../components/FiltersViewer";
 import ProductFilters from "../components/ProductFilters";
 import ProductList from "../components/ProductList";
 import ProductSkeletonList from "../components/ProductSkeletonList";
 import ProductSort from "../components/ProductSort";
+import queryString from "query-string";
 const useStyles = makeStyles((theme) => ({
   root: {},
   left: {
@@ -28,13 +30,18 @@ const useStyles = makeStyles((theme) => ({
 
 function ListPage(props) {
   const classes = useStyles();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryParams = queryString.parse(location.search);
   const [productList, setProductList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [filters, setFilter] = useState({
-    _page: 1,
-    _limit: 9,
-    _sort: "salePrice:ASC",
-  });
+  const [filters, setFilter] = useState(() => ({
+    ...queryParams,
+    _page: Number.parseInt(queryParams._page) || 1,
+    _limit: Number.parseInt(queryParams._limit) || 9,
+    _sort: Number.parseInt(queryParams._sort) || "salePrice:ASC",
+  }));
+
   const [pagination, setPagination] = useState({
     limit: 9,
     page: 1,
@@ -55,6 +62,9 @@ function ListPage(props) {
     })();
   }, [filters]);
 
+  useEffect(() => {
+    navigate({ search: queryString.stringify(filters) });
+  }, [filters]);
   const handlePageChange = (e, page) => {
     setFilter((prevFilters) => ({ ...prevFilters, _page: page }));
   };

@@ -1,7 +1,10 @@
 import { Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
-import { useParams } from "react-router-dom";
+import DOMPurify from "dompurify";
+import { Route, Routes, useParams } from "react-router-dom";
+import AddToCartForm from "../components/AddToCartForm";
+import ProductDescriptionMenu from "../components/ProductDescriptionMenu";
 import ProductInfo from "../components/ProductInfo";
 import ProductThumbnail from "../components/ProductThumbnail";
 import useProductDetail from "../hooks/useProductDetail";
@@ -26,6 +29,13 @@ function DetailPage() {
   if (loading) {
     return <Box>Loading</Box>;
   }
+
+  const handleOnSubmitCart = (formValues) => {
+    console.log("cart value", formValues);
+  };
+
+  const safeDescription = DOMPurify.sanitize(product.description);
+  console.log(product);
   return (
     <Box>
       <Container>
@@ -36,9 +46,43 @@ function DetailPage() {
             </Grid>
             <Grid item className={classes.right}>
               <ProductInfo product={product} />
+              <AddToCartForm onSubmit={handleOnSubmitCart} />
             </Grid>
           </Grid>
         </Paper>
+
+        <ProductDescriptionMenu />
+
+        <Routes
+          path="products/:productId"
+          element={<DetailPage />}
+          product={product}
+        >
+          <Route
+            path="description"
+            element={
+              <Paper elevation={3}>
+                <div dangerouslySetInnerHTML={{ __html: safeDescription }} />
+              </Paper>
+            }
+          />
+          <Route
+            path="additional"
+            element={
+              <Paper elevation={3}>
+                <div dangerouslySetInnerHTML={{ __html: safeDescription }} />
+              </Paper>
+            }
+          />
+          <Route
+            path="reviews"
+            element={
+              <Paper elevation={3}>
+                <div dangerouslySetInnerHTML={{ __html: safeDescription }} />
+              </Paper>
+            }
+          />
+        </Routes>
       </Container>
     </Box>
   );

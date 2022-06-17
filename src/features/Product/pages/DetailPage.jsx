@@ -2,6 +2,8 @@ import { Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box, Container } from "@mui/system";
 import DOMPurify from "dompurify";
+import { addToCart } from "features/Cart/cartSlice";
+import { useDispatch } from "react-redux";
 import { Route, Routes, useParams } from "react-router-dom";
 import AddToCartForm from "../components/AddToCartForm";
 import ProductDescriptionMenu from "../components/ProductDescriptionMenu";
@@ -25,13 +27,20 @@ function DetailPage() {
   const classes = useStyles();
   const { productId } = useParams();
   const { product, loading } = useProductDetail(productId);
+  const dispatch = useDispatch();
 
   if (loading) {
     return <Box>Loading</Box>;
   }
 
-  const handleOnSubmitCart = (formValues) => {
-    console.log("cart value", formValues);
+  const handleOnSubmitCart = ({ quantity }) => {
+    const action = addToCart({
+      id: product.id,
+      product,
+      quantity,
+    });
+
+    dispatch(action);
   };
 
   const safeDescription = DOMPurify.sanitize(product.description);

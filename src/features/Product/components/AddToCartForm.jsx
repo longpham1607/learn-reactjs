@@ -30,14 +30,9 @@ function AddToCartForm(props) {
     },
   });
 
-  const {
-    handleSubmit,
-    control,
-    formState: { isSubmitting },
-    setValue,
-  } = form;
+  const { handleSubmit, control } = form;
   const handleOnSubmit = (value) => {
-    if (props.onSubmit) props.onSubmit(value);
+    props.onSubmit(value);
   };
 
   return (

@@ -1,6 +1,6 @@
-import { AccountCircle, Close } from "@mui/icons-material";
+import { AccountCircle, Close, ShoppingCart } from "@mui/icons-material";
 import CodeIcon from "@mui/icons-material/Code";
-import { Menu, MenuItem } from "@mui/material";
+import { Badge, Menu, MenuItem } from "@mui/material";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -13,9 +13,10 @@ import Typography from "@mui/material/Typography";
 import Login from "features/Auth/components/Login/index";
 import Register from "features/Auth/components/Register";
 import { logout } from "features/Auth/userSlice";
+import { cartItemsCountSelector } from "features/Cart/selectors";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 const MODE = {
   LOGIN: "login",
@@ -27,6 +28,9 @@ export default function Header() {
   const [mode, setMode] = useState(MODE.LOGIN);
   const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const cartItemsCount = useSelector(cartItemsCountSelector);
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -46,6 +50,10 @@ export default function Header() {
   const isLoggedIn = !!loggedInUser.id;
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleNavigateToCartPage = () => {
+    navigate("cart");
   };
   return (
     <div sx={{ flexGrow: 1 }}>
@@ -83,6 +91,17 @@ export default function Header() {
               <AccountCircle />
             </IconButton>
           )}
+
+          <IconButton
+            size="large"
+            aria-label="show 17 new notifications"
+            color="inherit"
+            onClick={handleNavigateToCartPage}
+          >
+            <Badge badgeContent={cartItemsCount} color="error">
+              <ShoppingCart />
+            </Badge>
+          </IconButton>
         </Toolbar>
       </AppBar>
 

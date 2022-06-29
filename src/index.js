@@ -1,7 +1,10 @@
 import store from "app/store";
 import Header from "components/Header";
+import CartFeature from "features/Cart";
 import CounterFeature from "features/Counter";
-import React from "react";
+import DetailPage from "features/Product/pages/DetailPage";
+import ListPage from "features/Product/pages/ListPage";
+import { SnackbarProvider } from "notistack";
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -9,11 +12,6 @@ import ClockFeature from "./features/Clock/index";
 import NotFound from "./features/NotFound";
 import TodoFeature from "./features/Todo/pages/index";
 import "./index.css";
-import { SnackbarProvider } from "notistack";
-import ProductFeature from "features/Product";
-import ListPage from "features/Product/pages/ListPage";
-import DetailPage from "features/Product/pages/DetailPage";
-import CartFeature from "features/Cart";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

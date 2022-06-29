@@ -12,7 +12,12 @@ export const cartTotalSelector = createSelector(
   cartItemsSelector,
   (cartItems) =>
     cartItems.reduce(
-      (total, item) => total + item.product.quantity * item.salePrice,
+      (total, item) => total + item.quantity * item.product.salePrice,
       0
     )
+);
+
+export const getCartItems = createSelector(
+  cartItemsSelector,
+  (cartItems) => cartItems
 );

@@ -44,7 +44,7 @@ function DetailPage() {
   };
 
   const safeDescription = DOMPurify.sanitize(product.description);
-  console.log(product);
+
   return (
     <Box>
       <Container>

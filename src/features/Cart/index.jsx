@@ -1,9 +1,8 @@
 import { Box, Container, Grid, Paper } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import ProductInfo from "features/Product/components/ProductInfo";
 import ProductThumbnail from "features/Product/components/ProductThumbnail";
 import { useSelector } from "react-redux";
-import { cartTotalSelector, getCartItems } from "./selectors";
+import { getCartItems } from "./selectors";
 
 CartFeature.propTypes = {};
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CartFeature({ product }) {
   const classes = useStyles();
-  const cartTotal = useSelector(cartTotalSelector);
+  //const cartTotal = useSelector(cartTotalSelector);
   const cartItems = useSelector(getCartItems);
   return (
     <Box>

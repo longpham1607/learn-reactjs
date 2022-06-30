@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Link, NavLink, useLocation, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 
 ProductDescriptionMenu.propTypes = {};
 
